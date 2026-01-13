@@ -1,0 +1,127 @@
+# CORE
+AddDefaultCharset UTF-8
+ServerSignature Off
+FileETag none
+
+
+# 404 Redirect
+ErrorDocument 404 /404.html
+
+RewriteEngine On
+
+# Main domain non-www to www redirect
+# RewriteCond %{HTTP_HOST} ^canadiandermatology\.com [NC]
+# RewriteRule (.*) https://www.canadiandermatology.com/$1 [L,R=301]
+
+# Main domain www to non-www redirect
+RewriteCond %{HTTP_HOST} ^www\.canadiandermatology\.com [NC]
+RewriteRule ^(.*)$ https://canadiandermatology.com/$1 [L,R=301]
+
+# Subdomain www to non-www redirect
+# RewriteCond %{HTTP_HOST} ^www\.static\.canadiandermatology\.com [NC]
+# RewriteRule (.*) https://static.canadiandermatology.com/$1 [L,R=301]
+
+# HTTP to HTTPS redirect
+RewriteCond %{HTTPS} !=on
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Point document root to /current
+# RewriteCond %{HTTP_HOST} ^canadiandermatology.com$ [NC,OR]
+# RewriteCond %{HTTP_HOST} ^www.canadiandermatology.com$
+# RewriteCond %{REQUEST_URI} !current/
+# RewriteRule (.*) /current/$1 [L]
+
+# REDIRECT (error on thakur pages)
+Redirect 301 /about/our-doctors/dr-juthika/ /about/our-doctors/dr-juthika-thakur/
+Redirect 301 /about/our-doctors/dr-thakur/ /about/our-doctors/dr-juthika-thakur/
+
+# CACHE
+<IfModule mod_headers.c>
+# UNSET ETAG HEADER
+	Header unset ETag
+
+# CACHE SETTINGS
+# 1 YEAR
+<FilesMatch "\.(flv|ico|pdf|avi|mov|ppt|doc|mp3|wmv|wav)$">
+Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# 6 MONTHS
+<FilesMatch "\.(jpg|jpeg|png|gif|swf)$">
+Header set Cache-Control "max-age=14515200, public"
+</FilesMatch>
+
+# 1 YEAR
+<FilesMatch "\.(txt|xml|js|css)$">
+Header set Cache-Control "max-age=31536000"
+</FilesMatch>
+
+# 1 YEAR
+<FilesMatch "\.(eot|svg|ttf|woff|woff2)$">
+Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# NEVER CACHE
+<FilesMatch "\.(html|htm|php|cgi|pl)$">
+Header set Cache-Control "max-age=0, no-store, no-cache, must-revalidate"
+</FilesMatch>
+
+</IfModule>
+
+
+
+# MIME TYPES
+<IfModule mod_mime.c>
+
+	# DEFAULTS
+	DefaultLanguage en
+	AddLanguage en-US .html .css .js
+	AddCharset utf-8 .html .css .js .xml .json .rss .atom
+
+	# JAVASCRIPT
+	AddType application/javascript js jsonp
+	AddType application/json json
+
+	# FONTS
+	AddType font/opentype otf
+	AddType application/font-woff woff
+	AddType application/x-font-woff woff
+	AddType application/vnd.ms-fontobject eot
+	AddType application/x-font-ttf ttc ttf
+	AddType image/svg+xml svg svgz
+	AddEncoding gzip svgz
+
+	# AUDIO
+	AddType audio/mp4 m4a f4a f4b
+	AddType audio/ogg oga ogg
+
+	# VIDEO
+	AddType video/mp4 mp4 m4v f4v f4p
+	AddType video/ogg ogv
+	AddType video/webm webm
+	AddType video/x-flv flv
+
+	# OTHERS
+	AddType application/octet-stream safariextz
+	AddType application/x-chrome-extension crx
+	AddType application/x-opera-extension oex
+	AddType application/x-shockwave-flash swf
+	AddType application/x-web-app-manifest+json webapp
+	AddType application/x-xpinstall xpi
+	AddType application/xml atom rdf rss xml
+	AddType application/vnd.openxmlformats .docx .pptx .xlsx .xltx . xltm .dotx .potx .ppsx
+	AddType text/cache-manifest appcache manifest
+	AddType text/vtt vtt
+	AddType text/x-component htc
+	AddType text/x-vcard vcf
+	AddType image/webp webp
+	AddType image/x-icon ico
+
+</IfModule>
+
+
+# HIDE HTACCESS FOR SECURITY
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
