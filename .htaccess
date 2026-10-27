@@ -34,6 +34,7 @@ RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 # REDIRECT (error on thakur pages)
 Redirect 301 /about/our-doctors/dr-juthika/ /about/our-doctors/dr-juthika-thakur/
 Redirect 301 /about/our-doctors/dr-thakur/ /about/our-doctors/dr-juthika-thakur/
+Redirect 301 /about/our-doctors/dr-anastasiya-muntyanu/ /about/our-doctors/
 
 # CACHE
 <IfModule mod_headers.c>
